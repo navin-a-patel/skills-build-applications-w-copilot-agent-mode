@@ -1,8 +1,12 @@
 import express from 'express'
+import usersRouter from './routes/users'
+import teamsRouter from './routes/teams'
+import activitiesRouter from './routes/activities'
+import workoutsRouter from './routes/workouts'
+import leaderboardRouter from './routes/leaderboard'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import { connectDB } from './db'
-import usersRouter from './routes/users'
 
 dotenv.config()
 
@@ -18,9 +22,11 @@ async function start() {
   app.get('/health', (_req, res) => res.json({ status: 'ok' }))
 
   app.use('/api/users', usersRouter)
+  app.use('/api/teams', teamsRouter)
+  app.use('/api/activities', activitiesRouter)
+  app.use('/api/workouts', workoutsRouter)
+  app.use('/api/leaderboard', leaderboardRouter)
 
-  // Basic error handler
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
     console.error('Unhandled error:', err)
     res.status(err?.status || 500).json({ error: err?.message || 'internal error' })
