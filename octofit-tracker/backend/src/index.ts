@@ -1,16 +1,17 @@
 import express from 'express'
+import cors from 'cors'
+import dotenv from 'dotenv'
+import { connectDB } from './db'
 import usersRouter from './routes/users'
 import teamsRouter from './routes/teams'
 import activitiesRouter from './routes/activities'
 import workoutsRouter from './routes/workouts'
 import leaderboardRouter from './routes/leaderboard'
-import cors from 'cors'
-import dotenv from 'dotenv'
-import { connectDB } from './db'
+import { getApiBaseUrl, PORT as CONFIG_PORT } from './config'
 
 dotenv.config()
 
-const PORT = process.env.PORT ? Number(process.env.PORT) : 4000
+const PORT = process.env.PORT ? Number(process.env.PORT) : CONFIG_PORT
 
 async function start() {
   await connectDB()
@@ -34,6 +35,7 @@ async function start() {
 
   app.listen(PORT, () => {
     console.log(`Server listening on http://localhost:${PORT}`)
+    console.log(`API base URL: ${getApiBaseUrl()}`)
   })
 }
 
